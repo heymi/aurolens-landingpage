@@ -1,0 +1,58 @@
+:root {
+  --ink: #0c0b09;
+  --soft-ink: #4c4842;
+  --muted: #777067;
+  --paper: #f8f5ef;
+  --paper-warm: #eee6d8;
+  --rule: rgba(12, 11, 9, 0.16);
+  --accent: #ed6a22;
+  --accent-deep: #9d3211;
+  --cream: #fffaf0;
+  --shadow: 0 24px 60px rgba(18, 14, 10, 0.18);
+  --display: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --body: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--body);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    linear-gradient(90deg, rgba(12, 11, 9, 0.035) 1px, transparent 1px) 0 0 / 80px 80px,
+    radial-gradient(circle at 78% 16%, rgba(237, 106, 34, 0.11), transparent 27rem),
+    var(--paper);
+}
+
+button,
+a {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  color: var(--cream);
+  background: var(--ink);
+}
