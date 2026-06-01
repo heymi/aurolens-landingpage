@@ -696,56 +696,6 @@ main {
     width: clamp(210px, 75vw, 310px);
   }
 
-  .stack-hit-area.is-scattered .polaroid-card:nth-of-type(1) {
-    --x: -118px !important;
-    --y: -92px !important;
-  }
-
-  .stack-hit-area.is-scattered .polaroid-card:nth-of-type(2) {
-    --x: 112px !important;
-    --y: -100px !important;
-  }
-
-  .stack-hit-area.is-scattered .polaroid-card:nth-of-type(3) {
-    --x: -126px !important;
-    --y: 74px !important;
-  }
-
-  .stack-hit-area.is-scattered .polaroid-card:nth-of-type(4) {
-    --x: 120px !important;
-    --y: 86px !important;
-  }
-
-  .stack-hit-area.is-scattered .polaroid-card:nth-of-type(5) {
-    --x: -26px !important;
-    --y: -146px !important;
-  }
-
-  .stack-hit-area.is-scattered .polaroid-card:nth-of-type(6) {
-    --x: 30px !important;
-    --y: 150px !important;
-  }
-
-  .stack-hit-area.is-scattered .polaroid-card:nth-of-type(7) {
-    --x: -112px !important;
-    --y: 156px !important;
-  }
-
-  .stack-hit-area.is-scattered .polaroid-card:nth-of-type(8) {
-    --x: 112px !important;
-    --y: 158px !important;
-  }
-
-  .stack-hit-area.is-scattered .polaroid-card:nth-of-type(9) {
-    --x: -152px !important;
-    --y: -12px !important;
-  }
-
-  .stack-hit-area.is-scattered .polaroid-card:nth-of-type(10) {
-    --x: 150px !important;
-    --y: -8px !important;
-  }
-
   .feature-band,
   .prints-section,
   .workflow-section,

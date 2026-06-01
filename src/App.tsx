@@ -138,28 +138,52 @@ const features = [
   },
 ]
 
-function makeScatterPoses(): ScatterPose[] {
-  const spread = [
-    { x: -270, y: -150, r: -24, s: 0.86 },
-    { x: 238, y: -165, r: 22, s: 0.88 },
-    { x: -304, y: 102, r: 18, s: 0.84 },
-    { x: 292, y: 118, r: -22, s: 0.85 },
-    { x: -72, y: -238, r: -10, s: 0.82 },
-    { x: 74, y: 238, r: 12, s: 0.84 },
-    { x: -210, y: 250, r: -30, s: 0.78 },
-    { x: 216, y: 252, r: 28, s: 0.78 },
-    { x: -360, y: -18, r: -8, s: 0.76 },
-    { x: 356, y: -12, r: 9, s: 0.76 },
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max)
+}
+
+function randomBetween(min: number, max: number) {
+  return min + Math.random() * (max - min)
+}
+
+function makeScatterPoses(bounds?: DOMRect, cardWidth = 300): ScatterPose[] {
+  if (typeof window === 'undefined' || !bounds) {
+    return photos.map((photo) => photo.base)
+  }
+
+  const viewportWidth = window.innerWidth
+  const viewportHeight = window.innerHeight
+  const stackCenterX = bounds.left + bounds.width / 2
+  const stackCenterY = bounds.top + bounds.height / 2
+  const cardHalfWidth = cardWidth * 0.43
+  const cardHalfHeight = cardWidth * 0.52
+  const safeX = [44 + cardHalfWidth, viewportWidth - 44 - cardHalfWidth]
+  const safeY = [86 + cardHalfHeight, viewportHeight - 60 - cardHalfHeight]
+
+  const zones = [
+    { x: [0.08, 0.24], y: [0.14, 0.3] },
+    { x: [0.75, 0.93], y: [0.12, 0.3] },
+    { x: [0.06, 0.24], y: [0.62, 0.84] },
+    { x: [0.74, 0.93], y: [0.62, 0.84] },
+    { x: [0.05, 0.2], y: [0.36, 0.58] },
+    { x: [0.8, 0.95], y: [0.36, 0.58] },
+    { x: [0.34, 0.62], y: [0.1, 0.24] },
+    { x: [0.34, 0.62], y: [0.72, 0.88] },
+    { x: [0.23, 0.38], y: [0.24, 0.43] },
+    { x: [0.62, 0.78], y: [0.5, 0.72] },
   ]
 
   return photos.map((_, index) => {
-    const pose = spread[index % spread.length]
+    const zone = zones[index % zones.length]
+    const targetX = clamp(randomBetween(zone.x[0], zone.x[1]) * viewportWidth, safeX[0], safeX[1])
+    const targetY = clamp(randomBetween(zone.y[0], zone.y[1]) * viewportHeight, safeY[0], safeY[1])
+    const scale = randomBetween(0.68, 0.84)
 
     return {
-    x: pose.x + Math.round((Math.random() - 0.5) * 34),
-    y: pose.y + Math.round((Math.random() - 0.5) * 30),
-    r: pose.r + Math.round((Math.random() - 0.5) * 8),
-    s: pose.s + Number(((Math.random() - 0.5) * 0.04).toFixed(2)),
+      x: Math.round(targetX - stackCenterX),
+      y: Math.round(targetY - stackCenterY),
+      r: Math.round(randomBetween(-31, 31)),
+      s: Number(scale.toFixed(2)),
     }
   })
 }
@@ -205,8 +229,11 @@ function PolaroidStack() {
   const [poses, setPoses] = useState<ScatterPose[]>(() => makeScatterPoses())
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
 
-  function scatter() {
-    setPoses(makeScatterPoses())
+  function scatter(target: HTMLElement) {
+    const bounds = target.getBoundingClientRect()
+    const card = target.querySelector<HTMLElement>('.polaroid-card')
+    const cardWidth = card?.getBoundingClientRect().width ?? 300
+    setPoses(makeScatterPoses(bounds, cardWidth))
     setScattered(true)
   }
 
@@ -214,7 +241,7 @@ function PolaroidStack() {
     <div
       className={`stack-hit-area ${scattered ? 'is-scattered' : ''}`}
       onPointerEnter={(event) => {
-        if (event.pointerType === 'mouse') scatter()
+        if (event.pointerType === 'mouse') scatter(event.currentTarget)
       }}
       onPointerMove={(event) => {
         const bounds = event.currentTarget.getBoundingClientRect()
@@ -231,7 +258,7 @@ function PolaroidStack() {
           if (scattered) {
             setScattered(false)
           } else {
-            scatter()
+            scatter(event.currentTarget)
           }
         }
       }}
