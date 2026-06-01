@@ -5,8 +5,9 @@ type PhotoCard = {
   id: string
   src: string
   alt: string
-  caption: string
-  author: string
+  note: string
+  date: string
+  tone: 'fuji' | 'polaroid' | 'gold' | 'cool' | 'faded' | 'mono'
   base: {
     x: number
     y: number
@@ -28,52 +29,94 @@ const downloadUrl = 'https://apps.apple.com/'
 
 const photos: PhotoCard[] = [
   {
-    id: 'portrait-01',
-    src: '/assets/photos/portrait-01.jpg',
-    alt: 'Portrait rendered as an AuroLens instant film print',
-    caption: 'Portrait / NC Skin',
-    author: 'Unsplash',
+    id: 'couple-anniversary',
+    src: '/assets/photos/couple-anniversary.jpg',
+    alt: 'A couple photo rendered as an AuroLens instant film print',
+    note: '3rd anniversary - Kyoto',
+    date: 'Apr 12, 2026',
+    tone: 'polaroid',
     base: { x: 0, y: 0, r: 4, s: 1 },
   },
   {
-    id: 'landscape-01',
-    src: '/assets/photos/landscape-01.jpg',
-    alt: 'Lake and mountain landscape rendered as an instant film print',
-    caption: 'Morning / Fuji 200',
-    author: 'Unsplash',
+    id: 'beach-trip',
+    src: '/assets/photos/beach-trip.jpg',
+    alt: 'A beach travel memory rendered as an AuroLens instant film print',
+    note: 'first morning in Maui',
+    date: 'Jun 03, 2026',
+    tone: 'fuji',
     base: { x: -18, y: 16, r: -9, s: 0.96 },
   },
   {
-    id: 'portrait-02',
-    src: '/assets/photos/portrait-02.jpg',
-    alt: 'Street portrait rendered as a warm instant film print',
-    caption: 'Street / KD Gold',
-    author: 'Unsplash',
+    id: 'weekend-dogs',
+    src: '/assets/photos/weekend-dogs.jpg',
+    alt: 'Two dogs rendered as a warm instant film print',
+    note: 'Sunday walk with Mochi',
+    date: 'May 18, 2026',
+    tone: 'gold',
     base: { x: 20, y: 12, r: 10, s: 0.95 },
   },
   {
-    id: 'landscape-02',
-    src: '/assets/photos/landscape-02.jpg',
-    alt: 'Forest landscape rendered as a cool instant film print',
-    caption: 'Forest / Classic',
-    author: 'Unsplash',
+    id: 'friends-birthday',
+    src: '/assets/photos/friends-birthday.jpg',
+    alt: 'Friends celebrating together rendered as an instant film print',
+    note: 'Lena birthday dinner',
+    date: 'Aug 27, 2026',
+    tone: 'faded',
     base: { x: -30, y: -12, r: -15, s: 0.9 },
   },
   {
-    id: 'portrait-03',
-    src: '/assets/photos/portrait-03.jpg',
-    alt: 'Close portrait rendered as a clean instant film print',
-    caption: 'Clean / AIR Japan',
-    author: 'Unsplash',
+    id: 'dinner-friends',
+    src: '/assets/photos/dinner-friends.jpg',
+    alt: 'Friends having dinner rendered as an instant film print',
+    note: 'after-work noodles',
+    date: 'Jul 21, 2026',
+    tone: 'gold',
+    base: { x: 12, y: -34, r: 7, s: 0.86 },
+  },
+  {
+    id: 'home-cat',
+    src: '/assets/photos/home-cat.jpg',
+    alt: 'A cat at home rendered as a clean instant film print',
+    note: 'rainy afternoon at home',
+    date: 'Sep 09, 2026',
+    tone: 'cool',
     base: { x: 32, y: -18, r: 14, s: 0.9 },
   },
   {
-    id: 'landscape-03',
-    src: '/assets/photos/landscape-03.jpg',
-    alt: 'Desert road and hills rendered as an instant film print',
-    caption: 'Vista / BLL',
-    author: 'Unsplash',
+    id: 'coffee-date',
+    src: '/assets/photos/coffee-date.jpg',
+    alt: 'A coffee date rendered as an instant film print',
+    note: 'tiny cafe near the station',
+    date: 'Nov 14, 2026',
+    tone: 'polaroid',
+    base: { x: -38, y: 18, r: -18, s: 0.84 },
+  },
+  {
+    id: 'road-trip',
+    src: '/assets/photos/road-trip.jpg',
+    alt: 'A road trip landscape rendered as an instant film print',
+    note: 'the long way north',
+    date: 'Oct 02, 2026',
+    tone: 'mono',
     base: { x: -6, y: -28, r: -4, s: 0.88 },
+  },
+  {
+    id: 'city-walk',
+    src: '/assets/photos/city-walk.jpg',
+    alt: 'A city walk photo rendered as an instant film print',
+    note: 'Shibuya before rain',
+    date: 'Dec 05, 2026',
+    tone: 'faded',
+    base: { x: 42, y: 8, r: 18, s: 0.82 },
+  },
+  {
+    id: 'home-corner',
+    src: '/assets/photos/home-corner.jpg',
+    alt: 'A quiet home corner rendered as an instant film print',
+    note: 'new apartment, first night',
+    date: 'Jan 08, 2027',
+    tone: 'cool',
+    base: { x: -12, y: 34, r: -7, s: 0.8 },
   },
 ]
 
@@ -97,20 +140,28 @@ const features = [
 
 function makeScatterPoses(): ScatterPose[] {
   const spread = [
-    { x: -158, y: -88, r: -20, s: 0.92 },
-    { x: 132, y: -98, r: 17, s: 0.94 },
-    { x: -180, y: 70, r: 15, s: 0.91 },
-    { x: 168, y: 76, r: -18, s: 0.92 },
-    { x: -34, y: -168, r: -7, s: 0.9 },
-    { x: 42, y: 156, r: 9, s: 0.93 },
+    { x: -270, y: -150, r: -24, s: 0.86 },
+    { x: 238, y: -165, r: 22, s: 0.88 },
+    { x: -304, y: 102, r: 18, s: 0.84 },
+    { x: 292, y: 118, r: -22, s: 0.85 },
+    { x: -72, y: -238, r: -10, s: 0.82 },
+    { x: 74, y: 238, r: 12, s: 0.84 },
+    { x: -210, y: 250, r: -30, s: 0.78 },
+    { x: 216, y: 252, r: 28, s: 0.78 },
+    { x: -360, y: -18, r: -8, s: 0.76 },
+    { x: 356, y: -12, r: 9, s: 0.76 },
   ]
 
-  return spread.map((pose) => ({
+  return photos.map((_, index) => {
+    const pose = spread[index % spread.length]
+
+    return {
     x: pose.x + Math.round((Math.random() - 0.5) * 34),
     y: pose.y + Math.round((Math.random() - 0.5) * 30),
     r: pose.r + Math.round((Math.random() - 0.5) * 8),
     s: pose.s + Number(((Math.random() - 0.5) * 0.04).toFixed(2)),
-  }))
+    }
+  })
 }
 
 function PolaroidCard({
@@ -128,7 +179,7 @@ function PolaroidCard({
 
   return (
     <figure
-      className="polaroid-card"
+      className={`polaroid-card tone-${photo.tone}`}
       style={
         {
           '--x': `${activePose.x}px`,
@@ -142,8 +193,8 @@ function PolaroidCard({
       <img className="polaroid-image" src={photo.src} alt={photo.alt} />
       <img className="polaroid-frame" src="/assets/polaroid/photo-bg.png" alt="" />
       <figcaption>
-        <span>{photo.caption}</span>
-        <span>{photo.author}</span>
+        <span>{photo.note}</span>
+        <span>{photo.date}</span>
       </figcaption>
     </figure>
   )
@@ -269,7 +320,7 @@ function App() {
           {samplePhotos.map((photo, index) => (
             <figure className="sample-print" key={photo.id} style={{ '--sample-r': `${[-5, 3, -2, 5, -4][index]}deg` } as StyleVars}>
               <img src={photo.src} alt={photo.alt} />
-              <figcaption>{photo.caption}</figcaption>
+              <figcaption>{photo.note}</figcaption>
             </figure>
           ))}
         </div>
