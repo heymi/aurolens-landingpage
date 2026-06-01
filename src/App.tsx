@@ -1,4 +1,4 @@
-import { type CSSProperties, useMemo, useState } from 'react'
+import { type CSSProperties, useMemo, useRef, useState } from 'react'
 import './App.css'
 
 type PhotoCard = {
@@ -228,6 +228,7 @@ function PolaroidStack() {
   const [scattered, setScattered] = useState(false)
   const [poses, setPoses] = useState<ScatterPose[]>(() => makeScatterPoses())
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
+  const lastTouchToggleAt = useRef(0)
 
   function scatter(target: HTMLElement) {
     const bounds = target.getBoundingClientRect()
@@ -244,22 +245,38 @@ function PolaroidStack() {
         if (event.pointerType === 'mouse') scatter(event.currentTarget)
       }}
       onPointerMove={(event) => {
+        if (event.pointerType !== 'mouse') return
+
         const bounds = event.currentTarget.getBoundingClientRect()
         const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2
         const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2
         setTilt({ x: Number(x.toFixed(3)), y: Number(y.toFixed(3)) })
       }}
-      onPointerLeave={() => {
+      onPointerLeave={(event) => {
+        if (event.pointerType !== 'mouse') return
+
         setScattered(false)
         setTilt({ x: 0, y: 0 })
       }}
       onPointerUp={(event) => {
         if (event.pointerType !== 'mouse') {
+          lastTouchToggleAt.current = Date.now()
+
           if (scattered) {
             setScattered(false)
           } else {
             scatter(event.currentTarget)
           }
+        }
+      }}
+      onClick={(event) => {
+        const isTouchViewport = window.matchMedia('(hover: none)').matches || navigator.maxTouchPoints > 0
+        if (!isTouchViewport || Date.now() - lastTouchToggleAt.current < 350) return
+
+        if (scattered) {
+          setScattered(false)
+        } else {
+          scatter(event.currentTarget)
         }
       }}
     >
