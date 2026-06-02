@@ -25,8 +25,11 @@ type ScatterPose = {
 
 type StyleVars = CSSProperties & Record<`--${string}`, string | number>
 
+const siteUrl = 'https://aurolens.aedc.cc'
+const siteDescription =
+  'AuroLens turns everyday frames into tactile instant film prints with refined color, paper depth, and a living photo wall.'
 const downloadUrl = 'https://apps.apple.com/'
-const supportEmail = 'support@aurolens.app'
+const supportEmail = 'support@aurolens.aedc.cc'
 
 const photos: PhotoCard[] = [
   {
@@ -432,6 +435,34 @@ function normalizePath(pathname: string) {
   return pathname.replace(/\/$/, '') || '/'
 }
 
+function setMeta(selector: string, attribute: string, value: string) {
+  let element = document.head.querySelector<HTMLMetaElement>(selector)
+
+  if (!element) {
+    element = document.createElement('meta')
+    const nameMatch = selector.match(/meta\[name="([^"]+)"\]/)
+    const propertyMatch = selector.match(/meta\[property="([^"]+)"\]/)
+
+    if (nameMatch) element.setAttribute('name', nameMatch[1])
+    if (propertyMatch) element.setAttribute('property', propertyMatch[1])
+    document.head.appendChild(element)
+  }
+
+  element.setAttribute(attribute, value)
+}
+
+function setCanonical(url: string) {
+  let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+
+  if (!canonical) {
+    canonical = document.createElement('link')
+    canonical.setAttribute('rel', 'canonical')
+    document.head.appendChild(canonical)
+  }
+
+  canonical.setAttribute('href', url)
+}
+
 function LegalPage({ page, path }: { page: LegalPageContent; path: LegalPath }) {
   return (
     <main className="legal-shell">
@@ -482,8 +513,23 @@ function App() {
   const samplePhotos = useMemo(() => photos.slice(0, 5), [])
 
   useEffect(() => {
-    document.title = legalPage ? `${legalPage.title} - AuroLens` : 'AuroLens - Instant Film Camera'
-  }, [legalPage])
+    const title = legalPage ? `${legalPage.title} - AuroLens` : 'AuroLens - Instant Film Camera'
+    const description = legalPage?.intro ?? siteDescription
+    const canonicalPath = legalPath ?? '/'
+    const canonicalUrl = new URL(canonicalPath, siteUrl).toString()
+    const imageUrl = new URL('/assets/appicon.png', siteUrl).toString()
+
+    document.title = title
+    setCanonical(canonicalUrl)
+    setMeta('meta[name="description"]', 'content', description)
+    setMeta('meta[property="og:title"]', 'content', title)
+    setMeta('meta[property="og:description"]', 'content', description)
+    setMeta('meta[property="og:url"]', 'content', canonicalUrl)
+    setMeta('meta[property="og:image"]', 'content', imageUrl)
+    setMeta('meta[name="twitter:title"]', 'content', title)
+    setMeta('meta[name="twitter:description"]', 'content', description)
+    setMeta('meta[name="twitter:image"]', 'content', imageUrl)
+  }, [legalPage, legalPath])
 
   if (legalPage && legalPath) {
     return <LegalPage page={legalPage} path={legalPath} />
