@@ -1,4 +1,4 @@
-import { type CSSProperties, useMemo, useRef, useState } from 'react'
+import { type CSSProperties, useEffect, useMemo, useRef, useState } from 'react'
 import './App.css'
 
 type PhotoCard = {
@@ -26,6 +26,7 @@ type ScatterPose = {
 type StyleVars = CSSProperties & Record<`--${string}`, string | number>
 
 const downloadUrl = 'https://apps.apple.com/'
+const supportEmail = 'support@aurolens.app'
 
 const photos: PhotoCard[] = [
   {
@@ -137,6 +138,127 @@ const features = [
     body: 'Finished prints gather into a tactile photo wall with overlap, rotation, and the feeling of something made by hand.',
   },
 ]
+
+const legalPages = {
+  '/privacy': {
+    title: 'Privacy Policy',
+    eyebrow: 'AuroLens Privacy',
+    updated: 'Last updated: June 2, 2026',
+    intro:
+      'AuroLens is designed for creating instant-film style photos while keeping your images and personal information under your control.',
+    sections: [
+      {
+        title: 'Information we process',
+        body: [
+          'AuroLens may process photos, edits, captions, and app settings that you choose to use inside the app. Photo processing is intended to happen on your device unless you explicitly choose a feature that sends or stores content elsewhere, such as sharing, exporting, or cloud backup.',
+          'We do not sell your personal information. We do not use your photos for advertising or model training.',
+        ],
+      },
+      {
+        title: 'Photos and media',
+        body: [
+          'The app only accesses photos you select or permissions you grant through iOS. You can change photo access at any time in iOS Settings.',
+          'Exports and shares are controlled by you. Once you share a photo with another app or service, that service may handle the content according to its own privacy practices.',
+        ],
+      },
+      {
+        title: 'Cloud backup and purchases',
+        body: [
+          'If AuroLens offers optional cloud backup, synced photos or related metadata may be stored using Apple services such as iCloud or CloudKit for the purpose of restoring and syncing your library.',
+          'Purchases and subscriptions are handled by Apple through StoreKit. We may receive purchase status information needed to unlock paid features, but payment details are handled by Apple.',
+        ],
+      },
+      {
+        title: 'Diagnostics and support',
+        body: [
+          'If you contact support, we may receive the information you include in your message, such as your email address, device details, screenshots, or a description of the issue.',
+          'Apple may provide crash logs, diagnostics, or aggregated analytics depending on your device settings and App Store Connect reporting.',
+        ],
+      },
+      {
+        title: 'Your choices',
+        body: [
+          'You can revoke photo permissions, delete local content, disable optional sync features, or delete the app at any time.',
+          `For privacy requests, data access questions, or deletion requests, contact us at ${supportEmail}.`,
+        ],
+      },
+    ],
+  },
+  '/terms': {
+    title: 'Terms of Use',
+    eyebrow: 'AuroLens Terms',
+    updated: 'Last updated: June 2, 2026',
+    intro:
+      'These terms explain the basic rules for using AuroLens. By using the app, you agree to use it responsibly and in accordance with applicable laws.',
+    sections: [
+      {
+        title: 'License',
+        body: [
+          'AuroLens grants you a personal, non-transferable license to use the app on Apple devices that you own or control, subject to these terms and Apple’s App Store terms.',
+          'If no custom end user license agreement is provided inside App Store Connect, Apple’s standard Licensed Application End User License Agreement may apply.',
+        ],
+      },
+      {
+        title: 'Your content',
+        body: [
+          'You keep ownership of photos and text you create or edit with AuroLens.',
+          'You are responsible for having the rights and permissions needed for any photos you edit, export, post, or share.',
+        ],
+      },
+      {
+        title: 'Paid features',
+        body: [
+          'Some features may require an in-app purchase or subscription. Purchases are processed by Apple, and cancellation or refund options are managed through your Apple ID account settings.',
+          'Feature availability may change as the app evolves, but we will avoid removing paid functionality in a way that is unfair to active users.',
+        ],
+      },
+      {
+        title: 'Acceptable use',
+        body: [
+          'Do not use AuroLens to create, edit, or distribute content that violates the law, infringes someone else’s rights, or harms others.',
+          'Do not attempt to reverse engineer, disrupt, or misuse the app or related services.',
+        ],
+      },
+      {
+        title: 'Contact',
+        body: [`Questions about these terms can be sent to ${supportEmail}.`],
+      },
+    ],
+  },
+  '/support': {
+    title: 'Support',
+    eyebrow: 'AuroLens Help',
+    updated: 'Support and privacy requests',
+    intro:
+      'Need help with AuroLens, purchases, photo exports, or privacy choices? Start here.',
+    sections: [
+      {
+        title: 'Contact support',
+        body: [
+          `Email us at ${supportEmail}. Include your device model, iOS version, app version, and a short description of what happened.`,
+          'For purchase refunds, subscription cancellation, or billing issues, Apple may require you to manage the request through your Apple ID purchase history.',
+        ],
+      },
+      {
+        title: 'Privacy requests',
+        body: [
+          `For data access, deletion, or privacy questions, contact ${supportEmail} with “Privacy Request” in the subject line.`,
+          'If your question is about Apple ID purchase records or App Store billing, please contact Apple Support directly.',
+        ],
+      },
+      {
+        title: 'Common checks',
+        body: [
+          'If photo access is not working, open iOS Settings and confirm AuroLens has access to the photos you want to edit.',
+          'If an export fails, make sure there is available device storage and try exporting again after restarting the app.',
+        ],
+      },
+    ],
+  },
+}
+
+type LegalPath = keyof typeof legalPages
+type LegalPageContent = (typeof legalPages)[LegalPath]
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max)
@@ -306,8 +428,66 @@ function PolaroidStack() {
   )
 }
 
+function normalizePath(pathname: string) {
+  return pathname.replace(/\/$/, '') || '/'
+}
+
+function LegalPage({ page, path }: { page: LegalPageContent; path: LegalPath }) {
+  return (
+    <main className="legal-shell">
+      <header className="legal-header">
+        <a className="brand-mark legal-brand" href="/" aria-label="AuroLens home">
+          <img src="/assets/appicon.png" alt="" />
+          <span>AuroLens®</span>
+        </a>
+        <nav className="legal-nav" aria-label="Legal pages">
+          {Object.entries(legalPages).map(([href, item]) => (
+            <a key={href} href={href} aria-current={href === path ? 'page' : undefined}>
+              {item.title}
+            </a>
+          ))}
+        </nav>
+      </header>
+
+      <article className="legal-card">
+        <p className="section-kicker">{page.eyebrow}</p>
+        <h1>{page.title}</h1>
+        <p className="legal-updated">{page.updated}</p>
+        <p className="legal-intro">{page.intro}</p>
+
+        <div className="legal-sections">
+          {page.sections.map((section) => (
+            <section className="legal-section" key={section.title}>
+              <h2>{section.title}</h2>
+              {section.body.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </section>
+          ))}
+        </div>
+      </article>
+
+      <footer className="legal-footer">
+        <a href="/">Back to AuroLens</a>
+        <a href={`mailto:${supportEmail}`}>{supportEmail}</a>
+      </footer>
+    </main>
+  )
+}
+
 function App() {
+  const pathname = typeof window === 'undefined' ? '/' : normalizePath(window.location.pathname)
+  const legalPath = pathname in legalPages ? (pathname as LegalPath) : null
+  const legalPage = legalPath ? legalPages[legalPath] : null
   const samplePhotos = useMemo(() => photos.slice(0, 5), [])
+
+  useEffect(() => {
+    document.title = legalPage ? `${legalPage.title} - AuroLens` : 'AuroLens - Instant Film Camera'
+  }, [legalPage])
+
+  if (legalPage && legalPath) {
+    return <LegalPage page={legalPage} path={legalPath} />
+  }
 
   return (
     <main>
@@ -399,6 +579,12 @@ function App() {
           Download App
         </a>
       </section>
+
+      <footer className="site-footer" aria-label="Legal and support links">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Use</a>
+        <a href="/support">Support</a>
+      </footer>
     </main>
   )
 }

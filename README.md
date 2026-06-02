@@ -23,3 +23,4 @@ http://127.0.0.1:5173/
 - AuroFilm paper assets live in `public/assets/polaroid/`.
 - Sample images live in `public/assets/photos/`.
 - Desktop and mobile verification screenshots are `desktop-preview.png`, `desktop-scattered-preview.png`, and `mobile-preview.png`.
+- App Store support pages are available at `/privacy`, `/terms`, and `/support`.

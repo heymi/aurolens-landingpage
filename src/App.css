@@ -604,6 +604,184 @@ main {
   transform: translateY(-3px);
 }
 
+.site-footer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 18px clamp(22px, 4vw, 54px);
+  padding: 28px 18px 42px;
+  border-top: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.site-footer a {
+  text-decoration: none;
+}
+
+.site-footer a:hover,
+.site-footer a:focus-visible {
+  color: var(--ink);
+}
+
+.legal-shell {
+  min-height: 100svh;
+  padding: clamp(20px, 3vw, 42px);
+  background:
+    linear-gradient(90deg, rgba(12, 11, 9, 0.035) 1px, transparent 1px) 0 0 / 80px 80px,
+    radial-gradient(circle at 84% 11%, rgba(237, 106, 34, 0.12), transparent 28rem),
+    radial-gradient(circle at 11% 86%, rgba(12, 11, 9, 0.07), transparent 25rem),
+    var(--paper);
+}
+
+.legal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  margin: 0 auto clamp(34px, 6vw, 92px);
+  max-width: 1180px;
+}
+
+.legal-brand {
+  flex: 0 0 auto;
+}
+
+.legal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.legal-nav a {
+  display: inline-grid;
+  place-items: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid rgba(12, 11, 9, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 250, 240, 0.48);
+  color: var(--soft-ink);
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 850;
+  backdrop-filter: blur(12px);
+}
+
+.legal-nav a[aria-current="page"] {
+  background: var(--ink);
+  color: var(--cream);
+  border-color: var(--ink);
+}
+
+.legal-card {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: clamp(28px, 6vw, 78px);
+  border: 1px solid var(--rule);
+  background:
+    linear-gradient(180deg, rgba(255, 250, 240, 0.72), rgba(248, 245, 239, 0.94)),
+    var(--paper);
+  box-shadow: 0 28px 88px rgba(18, 14, 10, 0.12);
+}
+
+.legal-card h1 {
+  max-width: 10ch;
+  margin: 18px 0 0;
+  color: var(--ink);
+  font-size: clamp(54px, 9vw, 118px);
+  line-height: 0.86;
+  font-weight: 950;
+  letter-spacing: -0.085em;
+}
+
+.legal-updated {
+  margin: 22px 0 0;
+  color: var(--accent-deep);
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.legal-intro {
+  max-width: 42rem;
+  margin: clamp(28px, 4vw, 50px) 0 0;
+  color: var(--ink);
+  font-size: clamp(20px, 2.2vw, 31px);
+  line-height: 1.28;
+  font-weight: 750;
+  letter-spacing: -0.045em;
+}
+
+.legal-sections {
+  display: grid;
+  gap: 0;
+  margin-top: clamp(34px, 5vw, 70px);
+  border-top: 1px solid var(--rule);
+}
+
+.legal-section {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.44fr) 1fr;
+  gap: clamp(18px, 4vw, 54px);
+  padding: clamp(24px, 4vw, 44px) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.legal-section h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(22px, 3vw, 40px);
+  line-height: 0.98;
+  font-weight: 920;
+  letter-spacing: -0.06em;
+}
+
+.legal-section p {
+  grid-column: 2;
+  max-width: 42rem;
+  margin: 0;
+  color: var(--soft-ink);
+  font-size: clamp(15px, 1.25vw, 18px);
+  line-height: 1.62;
+  letter-spacing: -0.012em;
+}
+
+.legal-section p + p {
+  margin-top: 14px;
+}
+
+.legal-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  max-width: 980px;
+  margin: 24px auto 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.legal-footer a {
+  text-decoration: none;
+}
+
+.legal-footer a:hover,
+.legal-footer a:focus-visible {
+  color: var(--ink);
+}
+
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
@@ -656,8 +834,13 @@ main {
 
   .feature-grid,
   .prints-section,
-  .workflow-section {
+  .workflow-section,
+  .legal-section {
     grid-template-columns: 1fr;
+  }
+
+  .legal-section p {
+    grid-column: 1;
   }
 
   .feature-item {
@@ -677,6 +860,14 @@ main {
 
   .site-header nav {
     display: none;
+  }
+
+  .legal-header {
+    align-items: flex-start;
+  }
+
+  .legal-nav {
+    justify-content: flex-start;
   }
 
   .hero-section {
@@ -699,8 +890,21 @@ main {
   .feature-band,
   .prints-section,
   .workflow-section,
-  .closing-section {
+  .closing-section,
+  .legal-shell {
     padding: 64px 18px;
+  }
+
+  .legal-card {
+    padding: 26px 20px;
+  }
+
+  .legal-card h1 {
+    max-width: 8ch;
+  }
+
+  .legal-footer {
+    flex-direction: column;
   }
 
   .sample-rail {
