@@ -415,7 +415,6 @@ function PolaroidStack() {
         }
         aria-label="Interactive stack of AuroLens instant film prints"
       >
-        <img className="camera-plate camera-plate-bottom" src="/assets/polaroid/p-bg-bottom.png" alt="" />
         {photos.map((photo, index) => (
           <PolaroidCard
             key={photo.id}
@@ -425,7 +424,6 @@ function PolaroidStack() {
             pose={poses[index]}
           />
         ))}
-        <img className="camera-plate camera-plate-top" src="/assets/polaroid/p-bg-top.png" alt="" />
       </div>
     </div>
   )
