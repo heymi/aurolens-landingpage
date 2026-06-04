@@ -29,7 +29,7 @@ const siteUrl = 'https://aurolens.aedc.cc'
 const siteDescription =
   'AuroLens turns everyday frames into tactile instant film prints with refined color, paper depth, and a living photo wall.'
 const downloadUrl = 'https://apps.apple.com/'
-const supportEmail = 'support@aurolens.aedc.cc'
+const supportEmail = 'aurolens@aedc.cc'
 
 const photos: PhotoCard[] = [
   {
